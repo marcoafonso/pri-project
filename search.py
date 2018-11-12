@@ -3,6 +3,8 @@ from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
 import csv
 import operator
 import sys
+import nltk
+import string
 
 csv.field_size_limit(sys.maxsize)
 
@@ -19,7 +21,8 @@ def party_total_keywords(keywords):
                     if key == w:
                         dict_party_total_keywords[(row['party'], key)] += 1
 
-    print(dict_party_total_keywords)
+    for key,value in dict_party_total_keywords.items():
+        print("Partido: " + str(key[0]) + " | " + "Keyword: " + str(key[1]) + " | " + "Número de vezes: " + str(value))
 
 
 def party_total_manifestos(keywords):
@@ -36,12 +39,12 @@ def party_total_manifestos(keywords):
                         if row['manifesto_id'] not in dict_manifesto_contain_key[key]:
                             dict_party_total_manifestos[row['party']] += 1
 
-    print(dict_party_total_manifestos)
+    for key,value in dict_party_total_manifestos.items():
+            print("Partido: " + str(key) + " |", "Manifestos: " + str(value))
 
 
 def manifestos_with_keywords(keywords):
     dict_tfidf = tf_idf()
-    dict_ordenado = defaultdict(str)
     dict_manifesto_contain_key = defaultdict(str)
 
     with open('pt_docs_clean.csv', 'r') as csvfile:
@@ -61,8 +64,11 @@ def manifestos_with_keywords(keywords):
             if value == v:
                 dict_aux[v, dict_manifesto_contain_key[v]] += str(dict_tfidf[v])
 
-    sorted_d = sorted(dict_aux.keys(), key=operator.itemgetter(1), reverse=True)
-    print(sorted_d)
+    sorted_d = sorted(dict_aux.items(), key=operator.itemgetter(1), reverse=True) #lista de tuplos
+
+    for element in sorted_d:
+        print("Keyword & manifesto_id: " + str(element[0]))
+        print("Value: " + element[1])
 
 
 def tf_idf():
@@ -82,7 +88,14 @@ def tf_idf():
     return tfidf_scores
 
 
-keywords = ['democratica', 'partido', 'ficar', 'justiça']
-manifestos_with_keywords(keywords)
-party_total_manifestos(keywords)
-party_total_keywords(keywords)
+def main():
+    var = input("Please enter something: ")
+    print("You entered " + str(var))
+
+    keywords = nltk.word_tokenize(var)
+    manifestos_with_keywords(keywords)
+    party_total_manifestos(keywords)
+    party_total_keywords(keywords)
+
+
+main()
