@@ -45,10 +45,6 @@ def mostMentionedEntitiesGlobally():
 #Which party is mentioned more times by the other parties?
 
 def mostMentionedPartyForOtherParties():
-    partiesL = ['Labour Party', 'Conservative Party', 'Liberal Democrats', 'Scottish National Party',
-                'Green Party of England and Wales',
-                'We Ourselves', 'Social Democratic and Labour Party', 'Ulster Unionist Party', 'The Party of Wales',
-                'Democratic Unionist Party', 'United Kingdom Independence Party']
     partiesText = {'Labour Party': "", 'Conservative Party': "",
                 'Liberal Democrats': "", 'Scottish National Party': "", 'Green Party of England and Wales': "",
                 'We Ourselves': "", 'Social Democratic and Labour Party': "", 'Ulster Unionist Party': "",
@@ -59,7 +55,7 @@ def mostMentionedPartyForOtherParties():
                 'The Party of Wales': 0, 'Democratic Unionist Party': 0, 'United Kingdom Independence Party': 0}
     for i in range(len(df.party)):
         partiesText[df.party[i]] += df.text[i]
-    for p in partiesL:
+    for p in partiesOccur:
         for pt in partiesText:
             if p == pt:
                 continue
@@ -71,10 +67,6 @@ def mostMentionedPartyForOtherParties():
 #How many times does any given party mention other parties?
 
 def timesPartyMentionOtherParties():
-    partiesL = ['Labour Party', 'Conservative Party', 'Liberal Democrats', 'Scottish National Party',
-                'Green Party of England and Wales',
-                'We Ourselves', 'Social Democratic and Labour Party', 'Ulster Unionist Party', 'The Party of Wales',
-                'Democratic Unionist Party', 'United Kingdom Independence Party']
     partiesText = {'Labour Party': "", 'Conservative Party': "",
                    'Liberal Democrats': "", 'Scottish National Party': "", 'Green Party of England and Wales': "",
                    'We Ourselves': "", 'Social Democratic and Labour Party': "", 'Ulster Unionist Party': "",
@@ -93,12 +85,25 @@ def timesPartyMentionOtherParties():
                 partiesOccur[p] += partiesText[p].count(pt)
     print(partiesOccur)
 
+#Explain all the entities mentioned.
+
+def explainEntities():
+    enti = []
+    for i in range(len(df.text)):
+        doc = nlp(df.text[i])
+        for entity in doc.ents:
+            if entity.label_ not in enti:
+                enti.append(entity.label_)
+    for e in enti:
+        print("Entity " + e + " refers to " + spacy.explain(e))
+
+
 def usage(progName):
     print('Processamento e Recuperação de Informação - Instituto Superior Tecnico / Universidade Lisboa')
     print('Statistical analysis of the subjects mentioned.\n')
     print('')
     print('Usage:')
-    print('  %s entitiesForParty, entitiesGlobally, mentionedPartyForOtherParties ou timesPartyMentionOtherParties' % progName)
+    print('  %s entitiesForParty, entitiesGlobally, mentionedPartyForOtherParties, timesPartyMentionOtherParties or explainEntities' % progName)
     print('')
     sys.exit()
 
@@ -113,3 +118,5 @@ if __name__ == '__main__':
         mostMentionedPartyForOtherParties()
     if sys.argv[1] == 'timesPartyMentionOtherParties':
         timesPartyMentionOtherParties()
+    if sys.argv[1] == 'explainEntities':
+        explainEntities()
