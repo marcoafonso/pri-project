@@ -12,9 +12,9 @@ statisticalAnalysis.py
 ================================================================================================================
 1º Open the terminal
 
-2º Run the script: python3 statisticalAnalysis.py <option>
+2º Run the script: python3 statisticalAnalysis.py '<option>'
    
-being <option> one of the following:
+being '<option>' one of the following:
 
 	- entitiesForParty 			(most mentioned entities for each party)
 
