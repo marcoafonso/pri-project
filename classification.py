@@ -19,7 +19,7 @@ def linearSVC_tester(j,doc):
 
     model = LinearSVC()
 
-    vectorizer = TfidfVectorizer(use_idf=False, max_df=0.90, min_df=3, norm='l2', max_features=20000)
+    vectorizer = TfidfVectorizer(max_df=0.90, min_df=3, ngram_range=(1, 2))
 
     X_train, X_test, y_train, y_test = train_test_split(train_set['text'], train_set['party'], test_size = 0.2)
 
