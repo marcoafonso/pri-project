@@ -28,6 +28,7 @@ def linearSVC_tester(j,doc):
     classifier = model.fit(X_train_vec, y_train)
 
     prediction_tester = classifier.predict(vectorizer.transform([str(train_set['text'][j])]))
+
     print('Predicted: ' + prediction_tester[0])
     print('Expected: ' + train_set['party'][j])
     print('Text being tested: ' + train_set['text'][j])
