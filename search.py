@@ -43,7 +43,6 @@ def search_over_index(keywords):
     party_mentions_keyword = defaultdict(int)
     top_mentions = defaultdict(int)
 
-
     ix = open_dir("indexdir")
     with ix.searcher(weighting=scoring.BM25F()) as searcher:
         for k in keys:
